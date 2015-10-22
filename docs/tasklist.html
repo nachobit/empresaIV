@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>tasklist.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="Gruntfile.html">
+                  Gruntfile.js
+                </a>
+              
+                
+                <a class="source" href="app.html">
+                  app.js
+                </a>
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="tasklist.html">
+                  tasklist.js
+                </a>
+              
+                
+                <a class="source" href="users.html">
+                  users.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>tasklist.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> DocumentDBClient = <span class="hljs-built_in">require</span>(<span class="hljs-string">'documentdb'</span>).DocumentClient;
+<span class="hljs-keyword">var</span> <span class="hljs-keyword">async</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'async'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">TaskList</span>(<span class="hljs-params">taskDao</span>) </span>{
+  <span class="hljs-keyword">this</span>.taskDao = taskDao;
+}
+
+<span class="hljs-built_in">module</span>.exports = TaskList;
+
+TaskList.prototype = {
+    showTasks: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+
+        <span class="hljs-keyword">var</span> querySpec = {
+            query: <span class="hljs-string">'SELECT * FROM root r WHERE r.completed=@completed'</span>,
+            parameters: [{
+                name: <span class="hljs-string">'@completed'</span>,
+                value: <span class="hljs-literal">false</span>
+            }]
+        };
+
+        self.taskDao.find(querySpec, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, items</span>) </span>{
+            <span class="hljs-keyword">if</span> (err) {
+                <span class="hljs-keyword">throw</span> (err);
+            }
+
+            res.render(<span class="hljs-string">'index'</span>, {
+                title: <span class="hljs-string">'My ToDo List '</span>,
+                tasks: items
+            });
+        });
+    },
+
+    addTask: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+        <span class="hljs-keyword">var</span> item = req.body;
+
+        self.taskDao.addItem(item, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
+            <span class="hljs-keyword">if</span> (err) {
+                <span class="hljs-keyword">throw</span> (err);
+            }
+
+            res.redirect(<span class="hljs-string">'/'</span>);
+        });
+    },
+
+    completeTask: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) </span>{
+        <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+        <span class="hljs-keyword">var</span> completedTasks = <span class="hljs-built_in">Object</span>.keys(req.body);
+
+        <span class="hljs-keyword">async</span>.forEach(completedTasks, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">taskIterator</span>(<span class="hljs-params">completedTask, callback</span>) </span>{
+            self.taskDao.updateItem(completedTask, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
+                <span class="hljs-keyword">if</span> (err) {
+                    callback(err);
+                } <span class="hljs-keyword">else</span> {
+                    callback(<span class="hljs-literal">null</span>);
+                }
+            });
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">goHome</span>(<span class="hljs-params">err</span>) </span>{
+            <span class="hljs-keyword">if</span> (err) {
+                <span class="hljs-keyword">throw</span> err;
+            } <span class="hljs-keyword">else</span> {
+                res.redirect(<span class="hljs-string">'/'</span>);
+            }
+        });
+    }
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
