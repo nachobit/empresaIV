@@ -1,5 +1,6 @@
-var DocumentDBClient = require('documentdb').DocumentClient;
+assert=require("assert");
 
+var DocumentDBClient = require('documentdb').DocumentClient;
 var DocDBUtils = {
     getOrCreateDatabase: function (client, databaseId, callback) {
         var querySpec = {
@@ -9,7 +10,6 @@ var DocDBUtils = {
                 value: databaseId
             }]
         };
-
         client.queryDatabases(querySpec).toArray(function (err, results) {
             if (err) {
                 callback(err);
@@ -63,7 +63,12 @@ var DocDBUtils = {
                 }
             }
         });
+
+        assert=(querySpec, "Consulta a BD");
+        console.log("TODO OK, funcionando...");
     }
+    
+   
 };
 
 module.exports = DocDBUtils;
