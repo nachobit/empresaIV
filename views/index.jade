@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  h1 #{title}
+  br
+
+  form(action="/completetask", method="post")
+    table.table.table-striped.table-bordered
+      tr
+        td Nombre Empresa
+        td Nombre Alumno
+        td Fecha Inicio
+        td Duración (meses)
+        td Calificación
+        td Seleccionar
+      if (typeof tasks === "undefined")
+        tr
+          td
+      else
+        each task in tasks
+          tr
+            td #{task.name}
+            td #{task.nameA}
+            td #{task.dateStart}
+            td #{task.term}
+            td #{task.mark}
+            td
+              input(type="checkbox", name="#{task.id}", value="#{!task.completed}", checked=task.completed)
+    button.btn(type="submit") Eliminar
+  hr
+  form.well(action="/addtask", method="post")
+    label Nombre Empresa:
+    input(name="name", type="textbox")
+    label Nombre Alumno:
+    input(name="nameA", type="textbox")
+    label Fecha Inicio:
+    input(name="dateStart", type="date")
+    label Duración:
+    input(name="term", type="number" min="1" max="12")
+    label Calificacion:
+    input(name="mark", type="number")
+    br
+    button.btn(type="submit") Añadir Empresa
+
+
+  article
+  h1 Ranking de Empresas
