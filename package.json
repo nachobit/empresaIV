@@ -5,6 +5,11 @@
     "body-parser": "^1.5.1",
     "express": "^4.13.3",
     "method-override": "^2.1.2",
+    "mongodb": "^2.0.48",
     "mongoose": "~3.6.11"
+  },
+  "devDependencies": {
+    "docco": "^0.7.0",
+    "grunt-docco": "^0.4.0"
   }
 }
