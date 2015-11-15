@@ -1,12 +1,20 @@
 {
   "name": "node-tvshow",
-  "version": "2.0.0",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
   "dependencies": {
     "body-parser": "^1.5.1",
     "express": "^4.13.3",
     "method-override": "^2.1.2",
     "mongodb": "^2.0.48",
     "mongoose": "~3.6.11"
+  },
+  "repository": {
+  "type": "git",
+  "url": "git@github.com:nachobit/empresaIV.git"
   },
   "devDependencies": {
     "docco": "^0.7.0",

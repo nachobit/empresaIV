@@ -10,6 +10,10 @@
     "name": "Ignacio Romero Cabrerizo",
     "email": "nachorc@correo.ugr.es"
   },
+  "repository": {
+  "type": "git",
+  "url": "git@github.com:nachobit/empresaIV.git"
+  },
   "dependencies": {
     "async": "^1.4.2",
     "body-parser": "~1.13.2",
